@@ -1,0 +1,68 @@
+<ActionBar title="Transaction Detail">
+</ActionBar>
+
+<GridLayout rows="*" backgroundColor="#ffffff">
+    <StackLayout row="0">
+        <ScrollView margin="5 0 0 0" padding="10 0">
+            <GridLayout rows="auto, auto, auto, auto, auto, auto, auto">
+                <GridLayout row="0" columns="auto, *, *" rows="*, *">
+                    <Label row="0" col="0" fontSize="20" text="Spoonity" margin="0 0 0 25" padding="20 0"></Label>
+                    <Label row="0" col="1" fontSize="20" fontWeight="bold" text=" Inc" padding="20 0"></Label>
+                    <Label row="0" col="2" horizontalAlignment="right" color="#909090" fontSize="20" text="Receipt" margin="0 25" padding="20 0"></Label>
+                    <GridLayout row="1" column="0" colSpan="3" rows="*, *, *" columns="*" backgroundColor="#fafafa" margin="10 0" padding="20 25">
+                        <GridLayout row="0" col="0" columns="*" rows="*, *">
+                            <Label row="0" col="0" fontWeight="bold" color="#808080" text="Date"></Label>
+                            <Label row="1" col="0" [text]="(transaction_data.date * 1000) | date: 'MMM d, y'"></Label>
+                        </GridLayout>
+                        <GridLayout row="1" col="0" columns="*" rows="*, *" marginTop="20">
+                            <Label row="0" col="0" fontWeight="bold" color="#808080" text="Receipt Number"></Label>
+                            <Label row="1" col="0" [text]="transaction_data.receipt_number"></Label>
+                        </GridLayout>
+                        <GridLayout row="2" col="0" columns="*" rows="*, *, *" marginTop="20">
+                            <Label row="0" col="0" fontWeight="bold" color="#808080" text="Store Information"></Label>
+                            <Label row="1" col="0" [text]="transaction_data.name"></Label>
+                            <Label row="2" col="0" [text]="transaction_data.address"></Label>
+                        </GridLayout>
+                    </GridLayout>
+                </GridLayout>
+
+                <GridLayout row="1"columns="*, *" rows="*" margin="0 25">
+                    <Label row="0" col="0" fontSize="18" fontWeight="bold" text="Item"></Label>
+                    <Label row="0" col="1" fontSize="18" horizontalAlignment="right" fontWeight="bold" text="Price"></Label>
+                </GridLayout>
+
+                <ListView row="2" class="list-group" *ngIf="transaction_data" [items]="transaction_data.items" backgroundColor="#ffffff"
+                    opacity="1" style="height:100%" margin="0 25">
+                    <ng-template let-item="item">
+                        <GridLayout rows="*, *" columns="*">
+                            <GridLayout row="0" col="0" columns="*, *" rows="*" marginTop="20">
+                                <Label row="0" col="0" color="#808080" [text]="item.name"></Label>
+                                <Label row="0" col="1" horizontalAlignment="right" [text]="item.price | currency"></Label>
+                            </GridLayout>
+                        </GridLayout>
+                    </ng-template>
+                </ListView>
+
+                <GridLayout row="3" columns="*, *" rows="*, *" margin="20 25">
+                    <Label row="0" col="0" paddingBottom="10" fontWeight="bold" text="Tip"></Label>
+                    <Label row="0" col="1" paddingBottom="10" horizontalAlignment="right" [text]="transaction_data.tip.amount | currency"></Label>
+                    <Label row="1" col="0" fontWeight="bold" text="Subtotal"></Label>
+                    <Label row="1" col="1" horizontalAlignment="right" [text]="(transaction_data.subtotal + transaction_data.tip.amount) | currency"></Label>
+                </GridLayout>
+
+                <GridLayout row="4" rows="*" columns="*, *" class="input-field" *ngIf="transaction_data.starText">
+                    <Label row="0" col="0" [text]="'Rating:'"></Label>
+                    <Label row="0" col="1" class="rating-stars" horizontalAlignment="right" [text]="transaction_data.starText"></Label>
+                </GridLayout>
+
+                <StackLayout row="5" class="input-field" *ngIf="transaction_data.rating.window > 0">
+                    <Button [text]="transaction_data.rating.value == -1 ? 'Rate' : 'Change Rating'" (tap)="rateTransaction()" class="btn btn-primary m-t-20"></Button>
+                </StackLayout>
+
+                <StackLayout row="6" class="input-field" *ngIf="transaction_data.tip.window > 0">
+                    <Button [text]="'Tip'" (tap)="tipTransaction()" class="btn btn-primary m-t-20"></Button>
+                </StackLayout>
+            </GridLayout>
+        </ScrollView>
+    </StackLayout>
+</GridLayout>

@@ -1,0 +1,29 @@
+<ActionBar title="Account Information">
+</ActionBar>
+
+<GridLayout rows="*, auto" backgroundColor="#e8e8e8">
+    <StackLayout row="0">
+        <GridLayout rows="auto, auto, auto, auto, auto" columns="*">
+            <GridLayout row="0" col="0" colSpan="2" rows="*" columns="*, *" backgroundColor="#ffffff" height="50" padding="5 15" borderBottomWidth="1" borderColor="#cecece">
+                <Label row="0" col="0" text="First Name"></Label>
+                <Label row="0" col="1" horizontalAlignment="right" color="#999999" [text]="account_data.first_name"></Label>
+            </GridLayout>
+            <GridLayout row="1" col="0" colSpan="2" rows="*" columns="*, *" backgroundColor="#ffffff" height="50" padding="5 15" borderBottomWidth="1" borderColor="#cecece">
+                <Label row="0" col="0" text="Last Name"></Label>
+                <Label row="0" col="1" horizontalAlignment="right" color="#999999" [text]="account_data.last_name"></Label>
+            </GridLayout>
+            <GridLayout row="2" col="0" colSpan="2" rows="*" columns="*, *" backgroundColor="#ffffff" height="50" padding="5 15" borderBottomWidth="1" borderColor="#cecece">
+                <Label row="0" col="0" text="Email Address"></Label>
+                <Label row="0" col="1" horizontalAlignment="right" color="#999999" [text]="account_data.email_address"></Label>
+            </GridLayout>
+            <GridLayout row="3" col="0" colSpan="2" rows="*" columns="*, *" backgroundColor="#ffffff" height="50" padding="5 15" borderBottomWidth="1" borderColor="#cecece">
+                <Label row="0" col="0" text="Birthday"></Label>
+                <Label row="0" col="1" horizontalAlignment="right" color="#999999" [text]="(account_data.birthdate * 1000) | date: 'MMM d, y'"></Label>
+            </GridLayout>
+            <GridLayout row="4" col="0" colSpan="2" rows="*" columns="*, *" backgroundColor="#ffffff" height="50" padding="5 15" borderBottomWidth="1" borderColor="#cecece" (tap)="copyClipboard(account_data.referral_url)">
+                <Label row="0" col="0" text="Referral URL"></Label>
+                <Label row="0" col="1" horizontalAlignment="right" color="#999999" [text]="account_data.referral_url"></Label>
+            </GridLayout>
+        </GridLayout>
+    </StackLayout>
+</GridLayout>

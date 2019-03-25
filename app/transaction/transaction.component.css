@@ -1,0 +1,44 @@
+ListView {
+    separator-color: transparent;
+}
+
+/* HOME SECTION */
+Label[class*="-header"] {
+    font-size:22;
+    font-weight:bold;
+    margin-bottom:20;
+}
+[class*="-body"] {
+    margin-left:25;
+    margin-right:25;
+}
+Label[class*="-text"] {
+    font-size:18;
+}
+.header-body {
+    text-align:left;
+    padding-top:35;
+    padding-bottom:5;
+    padding-left:25;
+    width:100%;
+    border-bottom-width:1px;
+    border-bottom-color:#cecece;
+    background-color:#fafafa;
+}
+
+.input-field {
+    margin:0 25;
+}
+.btn-primary {
+    width:100%;
+	height:160px;
+	font-size:20px;
+	font-weight:bold;
+	border-radius:10;
+	color:#ffffff;
+	background-color:#F8A200;
+}
+.rating-stars {
+    color:#007AFF;
+    font-size:50;
+}

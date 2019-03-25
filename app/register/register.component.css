@@ -1,0 +1,62 @@
+.body-background {
+	background-color:#fff;
+}
+
+ListView {
+    separator-color: transparent;
+}
+
+.header-body {
+    text-align:left;
+    padding-top:35;
+    padding-bottom:5;
+    padding-left:25;
+    width:100%;
+    border-bottom-width:1px;
+    border-bottom-color:#cecece;
+    background-color:#fafafa;
+}
+
+StackLayout StackLayout {
+	padding: 20vh 40vh;
+}
+
+StackLayout StackLayout TextField {
+	width:100%;
+	padding:10px;
+	margin:20px 0;
+	font-size:20px;
+	color:#000000;
+	placeholder-color:#cecece;
+}
+
+.phone-group {
+	margin-left:25;
+	margin-right:25;
+	margin-top:30;
+	margin-bottom:30;
+}
+.phone-group TextField {
+	padding-bottom:10;
+	padding-top:30;
+}
+
+.tos-body {
+	margin:0 0 0 25;
+}
+.tos-body Label {
+	color:#909090;
+}
+.tos-body Switch {
+	margin-left:80;
+}
+
+.btn-register {
+	width:100%;
+	height:160px;
+	font-size:20px;
+	font-weight:bold;
+	border-radius:10;
+	color:#ffffff;
+	background-color:#F8A200;
+}

@@ -1,0 +1,298 @@
+<GridLayout rows="*, auto" backgroundColor="#ffffff">
+    <!-- HOME SECTION -->
+    <StackLayout row="0" visibility="{{ (showContent == 0) && doneLoading ? 'visible' : 'collapsed' }}">
+        <!-- Header Start -->
+        <Label class="header-body" row="0" horizontalAlignment="center">
+            <FormattedString>
+                <Span color="#000" fontSize="35" fontWeight="bold" text="Home"></Span>
+            </FormattedString>
+        </Label>
+        <!-- Header End -->
+
+        <!-- Main Content Start -->
+        <ScrollView margin="0 0 45 0" padding="10 0">
+            <GridLayout rows="auto, auto" marginTop="35">
+                <GridLayout class="token-body" row="0" columns="*, *" rows="*, *, *, *, *" marginBottom="10">
+                    <Label row="0" col="0" class="token-header" text="Card"></Label>
+                    <Label row="0" col="1" class="token-header negative" [ngClass]="{'active': quickpay.amount > 0}" horizontalAlignment="right" *ngIf="quickpay" [text]="quickpay.amount | currency"></Label>
+                    <GridLayout row="1" col="0" colSpan="2" class="token-grid" columns="*" rows="*" paddingBottom="35" borderBottomWidth="1" borderBottomColor="#e8e8e8">
+                        <StackLayout row="0" col="0" backgroundColor="#27ae60" verticalAlignment="center" paddingTop="20" paddingBottom="10" paddingLeft="55" paddingRight="55"
+                            horizontalAlignment="center" borderRadius="10">
+                            <Image row="0" col="0" class="token-img" *ngIf="token" [src]="token.barcode"></Image>
+                            <Label row="1" col="0" class="token-text" *ngIf="token" [text]="token.token"></Label>
+                        </StackLayout>
+                    </GridLayout>
+                </GridLayout>
+                <GridLayout class="reward-body" row="1" columns="*" rows="*, *, *, *">
+                    <!-- Reward Start -->
+                    <Label row="0" col="0" class="points-header" text="Points"></Label>
+                    <ListView row="3" col="0" class="reward-group" *ngIf="rewards" [items]="rewards.data" height="280">
+                        <ng-template let-reward="item">
+                            <GridLayout rows="*" marginLeft="-15" margin-top="-10">
+                                <RadPieChart allowAnimation="true" height="250" row="0" *ngIf="reward.progress > 0" verticalAlignment="top">
+                                    <DonutSeries tkPieSeries seriesName="pie" [items]="reward.pie" valueProperty="Amount" legendLabel="Reward" innerRadiusFactor="0"></DonutSeries>
+                                    <RadLegendView tkPieLegend position="Right" title="{{ reward.name + ' Reward' }}"
+                                        offsetOrigin="TopRight" width="110" enableSelection="true"></RadLegendView>
+                                    <Palette tkPiePalette seriesName="pie">
+                                        <PaletteEntry tkPiePaletteEntry fillColor="#3498db" strokeColor="#2980b9">
+                                        </PaletteEntry>
+                                        <PaletteEntry tkPiePaletteEntry fillColor="#f39c12" strokeColor="#e67e22">
+                                            </PaletteEntry>
+                                    </Palette>
+                                </RadPieChart>
+                            </GridLayout>
+                        </ng-template>
+                    </ListView>
+                </GridLayout>
+            </GridLayout>
+        </ScrollView>
+         <!-- Main Content End -->
+    </StackLayout>
+
+    <!-- INBOX SECTION -->
+    <StackLayout row="0" visibility="{{ (showContent == 1) && doneLoading ? 'visible' : 'collapsed' }}">
+        <!-- Header Start -->
+        <Label class="header-body" horizontalAlignment="center">
+            <FormattedString>
+                <Span color="#000" fontSize="35" fontWeight="bold" text="Inbox"></Span>
+            </FormattedString>
+        </Label>
+        <!-- Header End -->
+
+        <!-- Main Content Start -->
+        <StackLayout margin="0 0 45 0" padding="0 0">
+            <GridLayout backgroundColor="white">
+                <ListView class="list-group" *ngIf="messages" [items]="messages" (itemTap)="onItemTap($event)"
+                    (itemLoading)="onItemLoading($event)" backgroundColor="#ffffff" style="height:100%">
+                    <ng-template let-message="item">
+                        <GridLayout rows="*" columns="20, *">
+                            <StackLayout row="0" col="0" *ngIf="!message.read"
+                                backgroundColor="#007AFF" height="10" width="10" verticalAlignment="top"
+                                horizontalAlignment="center" borderRadius="100" marginTop="15" marginLeft="5"></StackLayout>
+                            <GridLayout row="0" col="1" rows="*, *, *" columns="*, 130" backgroundColor="#ffffff" height="100" margin="2.5 25 2.5 5" padding="5 0 10" borderBottomWidth="1"
+                                borderColor="#e8e8e8" (tap)="openMessage(message)" (swipe)="deleteMessage(message)" (longPress)="longPressMessage(message)">
+                                <StackLayout row="0" col="0">
+                                    <Label [text]="message.message.title" fontWeight="bold"></Label>
+                                </StackLayout>
+                                <StackLayout row="1" col="0" colSpan="2" marginTop="-5">
+                                    <Label [text]="message.message.subtitle" fontSize="15" backgroundColor="rgba(0,0,0,0)"></Label>
+                                </StackLayout>
+                                <StackLayout row="2" col="0" colSpan="2" marginTop="-10">
+                                    <TextView [text]="message.message.body" color="#909090" marginLeft="-5" marginTop="-10" backgroundColor="rgba(0,0,0,0)" lineHeight="1" fontSize="15" editable="false" ios:isUserInteractionEnabled="false"></TextView>
+                                </StackLayout>
+                                <GridLayout row="0" col="1" rows="*" columns="110,*" marginTop="-7">
+                                    <Label row="0" col="0" [text]="((message.message.publish_date * 1000) | date: 'y-MM-dd')" fontSize="15" color="#909090" horizontalAlignment="right"></Label>
+                                    <Label row="0" col="1" text="&#x203A;" color="#cecece" fontSize="25" horizontalAlignment="right" marginTop="-4"></Label>
+                                </GridLayout>
+                            </GridLayout>
+                        </GridLayout>
+                    </ng-template>
+                </ListView>
+            </GridLayout>
+        </StackLayout>
+        <!-- Main Content End -->
+    </StackLayout>
+
+    <!-- LOCATION SECTION -->
+    <StackLayout row="0" visibility="{{ (showContent == 2) && doneLoading ? 'visible' : 'collapsed' }}">
+        <!-- Header Start -->
+        <Label class="header-body" horizontalAlignment="center">
+            <FormattedString>
+                <Span color="#000" fontSize="35" fontWeight="bold" text="Locations"></Span>
+            </FormattedString>
+        </Label>
+        <!-- Header End -->
+
+        <!-- Main Content Start -->
+        <ScrollView margin="0 0 35 0" padding="0 0">
+            <GridLayout class="location-body" row="0" columns="*" rows="auto, auto, auto, auto" marginBottom="10" [marginTop]="favorite_stores.length > 0 ? '35' : ''">
+                <Label row="0" col="0" class="location-header" *ngIf="favorite_stores.length > 0" text="Your Top 3 Locations"></Label>
+                <ScrollView row="1" col="0" orientation="horizontal" paddingBottom="35" borderBottomWidth="1" *ngIf="favorite_stores.length > 0" borderBottomColor="#e8e8e8">
+                    <GridLayout columns="auto, auto, auto" marginBottom="30">
+                        <GridLayout columns="*, *" rows="200, *, *" col="0" borderRadius="10" borderColor="#cecece" borderWidth="1" backgroundColor="#ffffff" marginRight="30">
+                            <ActivityIndicator width="300" height="250" row="0" rowSpan="3" col="0" colSpan="2" [busy]="favorite_stores.length == 0"></ActivityIndicator>
+                            <WebView width="100%" height="200" row="0" col="0" colSpan="2" *ngIf="favorite_stores.length > 0" [src]="favorite_stores[0].html" marginLeft="-10" marginTop="-20" (tap)="goToLocation(favorite_stores[0])"></WebView>
+                            <Label class="" row="1" col="0" marginLeft="10" marginTop="-25" *ngIf="favorite_stores.length > 0" fontWeight="bold" [text]="favorite_stores[0].name" (tap)="openMobileOrdering(favorite_stores[0])"></Label>
+                            <Label class="" row="2" col="0" marginLeft="10" marginTop="-25" *ngIf="favorite_stores.length > 0" [text]="favorite_stores[0].address_line_1" (tap)="openMobileOrdering(favorite_stores[0])"></Label>
+                            <Label class="" row="2" col="1" marginRight="10" fontSize="30" color="#999999" marginTop="-30" horizontalAlignment="right" text="&#x203A;" (tap)="openMobileOrdering(favorite_stores[0])"></Label>
+                        </GridLayout>
+                        <GridLayout columns="*, *" rows="200, *, *" col="1" borderRadius="10" borderColor="#cecece" borderWidth="1" backgroundColor="#ffffff" marginRight="30">
+                            <ActivityIndicator width="300" height="250" row="0" rowSpan="3" col="0" colSpan="2" [busy]="favorite_stores.length == 0"></ActivityIndicator>
+                            <WebView width="100%" height="200" row="0" col="0" colSpan="2" *ngIf="favorite_stores.length > 0" [src]="favorite_stores[1].html" marginLeft="-10" marginTop="-20" (tap)="goToLocation(favorite_stores[1])"></WebView>
+                            <Label class="" row="1" col="0" marginLeft="10" marginTop="-25" *ngIf="favorite_stores.length > 0" fontWeight="bold" [text]="favorite_stores[1].name" (tap)="openMobileOrdering(favorite_stores[1])"></Label>
+                            <Label class="" row="2" col="0" marginLeft="10" marginTop="-25" *ngIf="favorite_stores.length > 0" [text]="favorite_stores[1].address_line_1" (tap)="openMobileOrdering(favorite_stores[1])"></Label>
+                            <Label class="" row="2" col="1" marginRight="10" fontSize="30" color="#999999" marginTop="-30" horizontalAlignment="right" text="&#x203A;" (tap)="openMobileOrdering(favorite_stores[1])"></Label>
+                        </GridLayout>
+                        <GridLayout columns="*, *" rows="200, *, *" col="2" borderRadius="10" borderColor="#cecece" borderWidth="1" backgroundColor="#ffffff">
+                            <ActivityIndicator width="300" height="250" row="0" rowSpan="3" col="0" colSpan="2" [busy]="favorite_stores.length == 0"></ActivityIndicator>
+                            <WebView width="100%" height="200" row="0" col="0" colSpan="2" *ngIf="favorite_stores.length > 0" [src]="favorite_stores[2].html" marginLeft="-10" marginTop="-20" (tap)="goToLocation(favorite_stores[2])"></WebView>
+                            <Label class="" row="1" col="0" marginLeft="10" marginTop="-25" *ngIf="favorite_stores.length > 0" fontWeight="bold" [text]="favorite_stores[2].name" (tap)="openMobileOrdering(favorite_stores[2])"></Label>
+                            <Label class="" row="2" col="0" marginLeft="10" marginTop="-25" *ngIf="favorite_stores.length > 0" [text]="favorite_stores[2].address_line_1" (tap)="openMobileOrdering(favorite_stores[2])"></Label>
+                            <Label class="" row="2" col="1" marginRight="10" fontSize="30" color="#999999" marginTop="-30" horizontalAlignment="right" text="&#x203A;" (tap)="openMobileOrdering(favorite_stores[2])"></Label>
+                        </GridLayout>
+                    </GridLayout>
+                </ScrollView>
+                <Label row="2" col="0" class="location-header" *ngIf="favorite_stores.length > 0" text="All Locations" paddingTop="10"></Label>
+                <StackLayout row="3" col="0" *ngIf="locations">
+                    <FlexboxLayout *ngFor="let location of locations.data" flexDirection="row" opacity="1">
+                        <GridLayout rows="*, *, 2*" columns="65, *, 100"
+                            backgroundColor="#ffffff" height="80"
+                            margin="2.5 0" padding="5 0" borderBottomWidth="1"
+                            borderColor="#CECECE">
+                            <StackLayout row="0" rowSpan="3" col="0"
+                                [backgroundImage]="location.is_open ? 'linear-gradient(to bottom, #7bed9f, #7bed9f, #7bed9f)' : 'linear-gradient(to bottom, #A1A7B2, #989DA9, #A1A7B2)'" height="50"
+                                width="50" verticalAlignment="center"
+                                horizontalAlignment="left" borderRadius="100" (tap)="goToLocation(location)" marginTop="-5">
+                                <Label class="fas locations-icon" [color]="location.is_open ? '#ff6b81' : '#ffffff'" text="&#xf3c5;"></Label>
+                            </StackLayout>
+                            <StackLayout row="0" col="1" (tap)="openLocation(location)">
+                                <Label [text]="location.name" fontWeight="bold"></Label>
+                            </StackLayout>
+                            <StackLayout row="1" col="1" colSpan="2" marginTop="5" (tap)="openLocation(location)">
+                                <Label [text]="location.address_line_1" color="#909090" fontSize="15"></Label>
+                            </StackLayout>
+                            <StackLayout row="0" col="2" *ngIf="!location.is_open">
+                                <Label text="Closed" color="#909090" horizontalAlignment="right"></Label>
+                            </StackLayout>
+                            <StackLayout row="0" rowSpan="1" col="2" verticalAlignment="center" (tap)="openMobileOrdering(location)" *ngIf="location.is_open" marginTop="-5">
+                                <Label text="Order &#x203A;" color="#909090" horizontalAlignment="right"></Label>
+                            </StackLayout>
+                        </GridLayout>
+                    </FlexboxLayout>
+                </StackLayout>
+            </GridLayout>
+        </ScrollView>
+        <!-- Main Content End -->
+    </StackLayout>
+
+    <!-- TRANSACTION SECTION -->
+    <StackLayout row="0" visibility="{{ (showContent == 3) && doneLoading ? 'visible' : 'collapsed' }}">
+        <!-- Header Start -->
+        <Label class="header-body" horizontalAlignment="center">
+            <FormattedString>
+                <Span color="#000" fontSize="35" fontWeight="bold" text="Transactions"></Span>
+            </FormattedString>
+        </Label>
+        <!-- Header End -->
+
+        <!-- Main Content Start -->
+        <StackLayout margin="0 0 45 0" padding="0 0">
+            <ListView class="list-group" *ngIf="transactions" [items]="transactions" (itemTap)="onItemTap($event)"
+                (itemLoading)="onItemLoading($event)" backgroundColor="#f9f9f9"
+                opacity="1" style="height:100%">
+                <ng-template let-transaction="item">
+                    <GridLayout marginBottom="40" rows="*, *, *" columns="*, *">
+                        <Label margin="10 15 0" row="0" col="0" color="#999999" [text]="(transaction.date * 1000) | date: 'MMM d, y'"></Label>
+                        <Label margin="10 15 0" row="0" col="1" horizontalAlignment="right" color="#999999" *ngIf="transaction.receipt_number" [text]="transaction.receipt_number"></Label>
+                        <GridLayout row="1" col="0" colSpan="2" rows="*, *, 2*" columns="80, *, 65"
+                            backgroundColor="#ffffff" height="80"
+                            margin="5 0 0" padding="5 0" borderTopWidth="1" borderBottomWidth="1"
+                            borderColor="#cecece">
+                            <StackLayout row="0" rowSpan="3" col="0"
+                                [backgroundColor]="(transaction.quickpay.loaded > 0 || transaction.quickpay.used > 0) ? '#2ecc71' : '#f8a200'" height="55"
+                                width="55" verticalAlignment="center"
+                                horizontalAlignment="left" borderRadius="5" marginLeft="15">
+                                <Label class="fas transaction-icon" [text]="(transaction.quickpay.loaded > 0 || transaction.quickpay.used > 0) ? '&#xf3d1;' : '&#xf06b;'"></Label>
+                            </StackLayout>
+                            <StackLayout row="0" col="1" height="40" width="100%"
+                                verticalAlignment="center"
+                                horizontalAlignment="left" marginTop="10">
+                                <Label [text]="transaction.name" fontWeight="400"></Label>
+                            </StackLayout>
+                            <StackLayout row="1" col="1"
+                                height="60" width="100%"
+                                horizontalAlignment="left" marginTop="15">
+                                <Label [text]="transaction.address" marginTop="5" color="#999999" fontSize="15"></Label>
+                            </StackLayout>
+                            <StackLayout row="2" col="1"
+                                height="60" width="100%"
+                                horizontalAlignment="left" marginTop="15">
+                                <Label *ngIf="transaction.quickpay.used > 0 || transaction.quickpay.loaded > 0"
+                                        [text]="(transaction.quickpay.used > 0 || transaction.quickpay.loaded > 0) ? 'Quick Pay' : 'Loyalty Pay'" marginTop="5" color="#999999" fontSize="15"></Label>
+                            </StackLayout>
+                        </GridLayout>
+                        <GridLayout row="2" col="0" colSpan="2" rows="*" columns="*, *, 15"
+                            backgroundColor="#ffffff" height="50"
+                            margin="0 0 0" padding="5 15" borderBottomWidth="1"
+                            borderColor="#cecece" *ngIf="transaction.receipt_number" (tap)="openTransaction(transaction)">
+                            <Label row="0" col="0" text="Total Billed"></Label>
+                            <Label row="0" col="1" horizontalAlignment="right" [text]="transaction.subtotal | currency"></Label>
+                            <Label row="0" col="2" horizontalAlignment="right" marginTop="-5" color="#999999" fontSize="35" text="&#x203A;"></Label>
+                        </GridLayout>
+                    </GridLayout>
+                </ng-template>
+            </ListView>
+        </StackLayout>
+        <!-- Main Content End -->
+    </StackLayout>
+
+    <!-- ACCOUNT SECTION -->
+    <StackLayout row="0" visibility="{{ (showContent == 4) && doneLoading ? 'visible' : 'collapsed' }}">
+            <!-- Header Start -->
+            <Label class="header-body" horizontalAlignment="center">
+                <FormattedString>
+                    <Span color="#000" fontSize="35" fontWeight="bold" text="Account"></Span>
+                </FormattedString>
+            </Label>
+            <!-- Header End -->
+    
+            <!-- Main Content Start -->
+            <StackLayout margin="0 0 60 10" padding="0 0">
+                <FlexboxLayout flexDirection="row" borderBottomWidth="1" borderBottomColor="#e8e8e8">
+                    <GridLayout rows="*, *, 2*" columns="50, *, 10"
+                        backgroundColor="#ffffff" height="40"
+                        margin="2.5 15" padding="5 0" borderRadius="10" (tap)="goToAccountInfo()">
+                        <StackLayout row="0" rowSpan="3" col="0"
+                        backgroundColor="#3498db" height="40"
+                        width="30" verticalAlignment="center"
+                        horizontalAlignment="left" borderRadius="6">
+                            <Label class="fas account-icon" horizontalAlignment="center" text="&#xf05a;"></Label>
+                        </StackLayout>
+                        <StackLayout row="0" rowSpan="3" col="1"
+                            height="70" width="100%" verticalAlignment="center"
+                            horizontalAlignment="left" borderRadius="5">
+                            <Label class="account-text" text="Account Information"></Label>
+                        </StackLayout>
+                    </GridLayout>
+                </FlexboxLayout>
+                <FlexboxLayout flexDirection="row" borderBottomWidth="1" borderBottomColor="#e8e8e8">
+                    <GridLayout rows="*, *, 2*" columns="50, *, 10"
+                        backgroundColor="#ffffff" height="40"
+                        margin="2.5 15" padding="5 0" borderRadius="10" (tap)="deleteAccount()">
+                        <StackLayout row="0" rowSpan="3" col="0"
+                        backgroundColor="#e74c3c" height="40"
+                        width="30" verticalAlignment="center"
+                        horizontalAlignment="left" borderRadius="6">
+                            <Label class="fas account-icon" horizontalAlignment="center" text="&#xf2ed;"></Label>
+                        </StackLayout>
+                        <StackLayout row="0" rowSpan="3" col="1"
+                            height="70" width="100%" verticalAlignment="center"
+                            horizontalAlignment="left" borderRadius="5">
+                            <Label class="account-text" text="Delete Account"></Label>
+                        </StackLayout>
+                    </GridLayout>
+                </FlexboxLayout>
+                <FlexboxLayout flexDirection="row" borderBottomWidth="1" borderBottomColor="#e8e8e8">
+                    <GridLayout rows="*, *, 2*" columns="50, *, 10"
+                        backgroundColor="#ffffff" height="40"
+                        margin="2.5 15" padding="5 0" borderRadius="10" (tap)="logOut()">
+                        <StackLayout row="0" rowSpan="3" col="0"
+                        backgroundImage="linear-gradient(to bottom, #A1A7B2, #989DA9, #A1A7B2)" height="40"
+                        width="30" verticalAlignment="center"
+                        horizontalAlignment="left" borderRadius="6">
+                            <Label class="fas account-icon" horizontalAlignment="center" text="&#xf2f5;"></Label>
+                        </StackLayout>
+                        <StackLayout row="0" rowSpan="3" col="1"
+                            height="70" width="100%" verticalAlignment="center"
+                            horizontalAlignment="left" borderRadius="5">
+                            <Label class="account-text" text="Logout"></Label>
+                        </StackLayout>
+                    </GridLayout>
+                </FlexboxLayout>
+            </StackLayout>
+            <!-- Main Content End -->
+        </StackLayout>
+
+    <BottomBar row="1" (tabSelected)="tabSelected($event)"></BottomBar>
+
+</GridLayout>

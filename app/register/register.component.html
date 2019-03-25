@@ -1,0 +1,35 @@
+<ActionBar title="Register">
+	<ActionItem (tap)="submit()" ios.position="right"
+		text="Register" android.position="popup"></ActionItem>
+</ActionBar>
+
+<GridLayout rows="*, auto" backgroundColor="#e8e8e8">
+	<StackLayout row="0">
+		<GridLayout rows="auto" columns="*">
+			<GridLayout row="0" col="0" rows="*, *, *, *, *, *" columns="180, 35, *" backgroundColor="#ffffff">
+				<Label row="0" col="0" text="First Name" paddingLeft="15" height="50" borderBottomWidth="1" borderColor="#cecece"></Label>
+				<TextField row="0" col="1" colSpan="2" class="input" hint="First Name" [isEnabled]="!processing" autocorrect="false" autocapitalizationType="sentences" [(ngModel)]="user.first_name" returnKeyType="next"
+						height="50" borderBottomWidth="1" borderColor="#cecece"></TextField>
+				<Label row="1" col="0" text="Last Name" paddingLeft="15" height="50" borderBottomWidth="1" borderColor="#cecece"></Label>
+				<TextField row="1" col="1" colSpan="2" class="input" hint="Last Name" [isEnabled]="!processing" autocorrect="false" autocapitalizationType="sentences" [(ngModel)]="user.last_name"
+						returnKeyType="next" height="50" borderBottomWidth="1" borderColor="#cecece"></TextField>
+				<Label row="2" col="0" text="Email Address" paddingLeft="15" height="50" borderBottomWidth="1" borderColor="#cecece"></Label>
+				<TextField row="2" col="1" colSpan="2" class="input" hint="Email" [isEnabled]="!processing" keyboardType="email" autocorrect="false" autocapitalizationType="none" [(ngModel)]="user.email_address" returnKeyType="next"
+						height="50" borderBottomWidth="1" borderColor="#cecece"></TextField>
+				<Label row="3" col="0" text="Password" paddingLeft="15" height="50" borderBottomWidth="1" borderColor="#cecece"></Label>
+				<TextField row="3" col="1" colSpan="2" class="input" [isEnabled]="!processing" hint="Password" secure="true" [(ngModel)]="user.password" returnKeyType="next"
+						height="50" borderBottomWidth="1" borderColor="#cecece"></TextField>
+				<Label row="4" col="0" text="Phone Number" paddingLeft="15" height="50" borderBottomWidth="1" borderColor="#cecece"></Label>
+				<TextField row="4" col="1" class="input" [isEnabled]="!processing" hint="+1" keyboardType="phone" [(ngModel)]="user.phone_number.code"
+					returnKeyType="next" height="50" borderBottomWidth="1" borderColor="#cecece"></TextField>
+				<TextField row="4" col="2" class="input" [isEnabled]="!processing" hint="Phone Number" keyboardType="phone" [(ngModel)]="user.phone_number.number"
+					returnKeyType="next" height="50" borderBottomWidth="1" borderColor="#cecece"></TextField>
+				<Label row="5" col="0" text="Terms of Service" paddingLeft="15" height="50" borderBottomWidth="1" borderColor="#cecece"></Label>
+				<StackLayout row="5" col="1" colSpan="2" height="50" borderBottomWidth="1" borderColor="#cecece">
+					<Switch checked="false" horizontalAlignment="left" marginLeft="-40" marginTop="-10" (checkedChange)="tosCheck($event)"></Switch>
+				</StackLayout>
+			</GridLayout>
+			<ActivityIndicator rowSpan="1" colSpan="1" [busy]="processing"></ActivityIndicator>
+		</GridLayout>
+	</StackLayout>
+</GridLayout>

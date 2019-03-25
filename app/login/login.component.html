@@ -1,0 +1,33 @@
+<GridLayout rows="*, auto" class="body-background">
+    <StackLayout row="0">
+
+        <!-- Header Start -->
+        <Label class="header-body" row="0" horizontalAlignment="center"
+            letterSpacing="0.2" paddingTop="35">
+            <FormattedString>
+                <Span color="#000" fontSize="24" fontWeight="normal" text="SPOONITY"></Span>
+                <Span color="#000" fontSize="24" fontWeight="bold" text=" APP"></Span>
+            </FormattedString>
+        </Label>
+        <!-- Header End -->
+        
+        <ActivityIndicator rowSpan="1" [busy]="processing"></ActivityIndicator>
+        <StackLayout row="0" class="login-body">
+            <TextField class="input" hint="Email" [isEnabled]="!processing"
+                keyboardType="email" autocorrect="false"
+                autocapitalizationType="none" [(ngModel)]="user.email_address"
+                returnKeyType="next" (returnPress)="focusPassword()"></TextField>
+            <StackLayout class="hr-light"></StackLayout>
+            <TextField #password class="input" [isEnabled]="!processing" hint="Password"
+                secure="true" [(ngModel)]="user.password" [returnKeyType]="isLoggingIn ? 'done' : 'next'"
+                (returnPress)="submit()"></TextField>
+        </StackLayout>
+        <StackLayout row="1" rowSpan="2" class="login-button-body">
+            <Button [text]="'Login'" [isEnabled]="!processing" (tap)="submit()"
+                class="btn btn-primary btn-login m-t-20"></Button>
+        </StackLayout>
+        <StackLayout row="2" class="input-field">
+            <Button [text]="'Register'" (tap)="goToRegister()" class="btn btn-primary btn-register m-t-20"></Button>
+        </StackLayout>
+    </StackLayout>
+</GridLayout>
